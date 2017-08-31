@@ -11,10 +11,11 @@ var createProxySetting = function(url) {
         target: url,
         changeOrigin: true,
         headers: {
-            'Accept' : 'application/json',
+            'Accept' : 'application/json, text/plain',
             'X-Requested-With': 'XMLHttpRequest'
         },
         onProxyReq: function (proxyReq, req) {
+            // post请求，处理了一下请求体
             if (req.method === 'POST' && req.body) {
                 var bodyData = JSON.stringify(req.body);
                 proxyReq.write(bodyData);
@@ -23,10 +24,7 @@ var createProxySetting = function(url) {
     }
 }
 
-app.use(function(req, res, next) {
-    console.log(req.url);
-    next();
-})
+
 // parse application/json
 app.use(bodyParser.json())
 
